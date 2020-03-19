@@ -20,7 +20,7 @@ class ProjectsTest extends TestCase
 
 
     /** @test */
-    public function a_user_can_create_a_project()
+    public function an_authenticated_user_can_create_a_project()
     {
         $this->actingAs(factory('App\User')->create());
 
@@ -30,22 +30,28 @@ class ProjectsTest extends TestCase
 
         //$this->assertDatabaseHas('projects', $attributes);
 
-        $this->get('/projects')->assertSee($attributes['title']);
+        //$this->get('/projects')->assertSee($attributes['title']);
 
     }
     
     /** @test */
-    public function a_user_can_view_a_project()
+    public function guest_can_not_view_a_project()
     {
-        $this->actingAs(factory('App\User')->create());    
-
-        $project = factory('App\Project')->create();
-
-        $this->get($project->path())
-             ->assertSee($project->title)
-             ->assertSee($project->description);
-
+        $this->post('/projects')->assertRedirect('login');
     }
+
+    /** @test */
+    // public function a_user_can_view_a_project()
+    // {
+    //     $this->actingAs(factory('App\User')->create());    
+
+    //     $project = factory('App\Project')->create();
+       
+    //     $this->get($project->path())
+    //          ->assertSee($project->title)
+    //          ->assertSee($project->description);
+
+    // }
 
     /** @test */    
     public function a_project_requires_a_title()
